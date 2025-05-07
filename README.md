@@ -60,7 +60,7 @@ docker compose watch
 1. **Feedback Mechanism**: Includes a star-based feedback system integrated with LangSmith.
 1. **Docker Support**: Includes Dockerfiles and a docker compose file for easy development and deployment.
 1. **Testing**: Includes robust unit and integration tests for the full repo.
-1. **Web Search Capabilities**: Includes both DuckDuckGo and Tavily search integrations for up-to-date information retrieval.
+1. **Web Search Capabilities**: Includes Tavily search integration for up-to-date information retrieval.
 1. **Support for Latest Models**: Compatible with the newest OpenAI models including gpt-4.1-mini.
 
 ### Key Files
@@ -148,30 +148,29 @@ The agent supports [LangGraph Studio](https://github.com/langchain-ai/langgraph-
 
 You can simply install LangGraph Studio, add your `.env` file to the root directory as described above, and then launch LangGraph studio pointed at the root directory. Customize `langgraph.json` as needed.
 
-### Using the Tavily Search Agent
+### Using Tavily Search in the Research Assistant
 
-The toolkit includes a specialized search agent that uses the [Tavily API](https://tavily.com/) for web search functionality. This agent provides more accurate and up-to-date search results compared to the default DuckDuckGo search.
+The research assistant agent now uses the [Tavily API](https://tavily.com/) for web search functionality. This provides more accurate and up-to-date search results compared to the previously used DuckDuckGo search.
 
-To use the Tavily search agent:
+To use the Tavily search functionality:
 
 1. Sign up for a Tavily API key at [https://app.tavily.com/sign-in](https://app.tavily.com/sign-in)
 2. Add your API key to your `.env` file:
    ```
    TAVILY_API_KEY=your_api_key_here
    ```
-3. Use the agent by specifying `tavily-search-agent` in your requests:
-   - In the Streamlit app, select "tavily-search-agent" from the agent dropdown
-   - For API calls, use the endpoint `/tavily-search-agent/invoke` or `/tavily-search-agent/stream`
+3. Use the research assistant agent as usual:
+   - In the Streamlit app, select "research-assistant" from the agent dropdown (default)
+   - For API calls, use the endpoint `/research-assistant/invoke` or `/research-assistant/stream`
 
-The Tavily search agent is particularly useful for:
+The Tavily search integration is particularly useful for:
 - Answering questions about current events
 - Finding up-to-date information
 - Researching topics with accurate source citations
 
-You can test the Tavily search functionality with the included test scripts:
+You can test the Tavily search functionality with the included test script:
 ```sh
-python simple_tavily_test.py  # Tests basic Tavily search
-python test_tavily_agent.py   # Tests the full Tavily search agent
+python simple_tavily_test.py  # Tests basic Tavily search functionality
 ```
 
 ### Using Ollama

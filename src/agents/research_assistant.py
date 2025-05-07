@@ -1,8 +1,9 @@
 from datetime import datetime
 from typing import Literal
 
-from langchain_community.tools import DuckDuckGoSearchResults, OpenWeatherMapQueryRun
+from langchain_community.tools import OpenWeatherMapQueryRun
 from langchain_community.utilities import OpenWeatherMapAPIWrapper
+from langchain_tavily import TavilySearch
 from langchain_core.language_models.chat_models import BaseChatModel
 from langchain_core.messages import AIMessage, SystemMessage
 from langchain_core.runnables import RunnableConfig, RunnableLambda, RunnableSerializable
@@ -26,8 +27,19 @@ class AgentState(MessagesState, total=False):
     remaining_steps: RemainingSteps
 
 
-web_search = DuckDuckGoSearchResults(name="WebSearch")
-tools = [web_search, calculator]
+# Initialize Tavily search tool
+tavily_search = TavilySearch(
+    max_results=3,
+    topic="general",
+    include_answer=True,
+    include_raw_content=False,
+    include_images=False,
+    search_depth="basic",
+    name="WebSearch"
+)
+
+# Initialize tools list
+tools = [tavily_search, calculator]
 
 # Add weather tool if API key is set
 # Register for an API key at https://openweathermap.org/api/
@@ -39,16 +51,18 @@ if settings.OPENWEATHERMAP_API_KEY:
 
 current_date = datetime.now().strftime("%B %d, %Y")
 instructions = f"""
-    You are a helpful research assistant with the ability to search the web and use other tools.
+    You are a helpful research assistant with the ability to search the web using Tavily Search and use other tools.
     Today's date is {current_date}.
 
     NOTE: THE USER CAN'T SEE THE TOOL RESPONSE.
 
     A few things to remember:
+    - Use the WebSearch tool (powered by Tavily) to find up-to-date information on the web.
     - Please include markdown-formatted links to any citations used in your response. Only include one
     or two citations per response unless more are needed. ONLY USE LINKS RETURNED BY THE TOOLS.
     - Use calculator tool with numexpr to answer math questions. The user does not understand numexpr,
       so for the final response, use human readable format - e.g. "300 * 200", not "(300 \\times 200)".
+    - Always cite your sources when providing factual information.
     """
 
 
