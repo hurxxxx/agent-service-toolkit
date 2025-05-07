@@ -9,6 +9,7 @@ from agents.interrupt_agent import interrupt_agent
 from agents.knowledge_base_agent import kb_agent
 from agents.langgraph_supervisor_agent import langgraph_supervisor_agent
 from agents.research_assistant import research_assistant
+from agents.tavily_search_agent import tavily_search_agent
 from schema import AgentInfo
 
 DEFAULT_AGENT = "research-assistant"
@@ -34,6 +35,10 @@ agents: dict[str, Agent] = {
     "knowledge-base-agent": Agent(
         description="A retrieval-augmented generation agent using Amazon Bedrock Knowledge Base",
         graph=kb_agent,
+    ),
+    "tavily-search-agent": Agent(
+        description="A search agent using Tavily for web search functionality.",
+        graph=tavily_search_agent,
     ),
 }
 

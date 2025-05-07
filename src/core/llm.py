@@ -27,6 +27,7 @@ from schema.models import (
 _MODEL_TABLE = {
     OpenAIModelName.GPT_4O_MINI: "gpt-4o-mini",
     OpenAIModelName.GPT_4O: "gpt-4o",
+    OpenAIModelName.GPT_41_MINI: "gpt-4.1-mini",
     OpenAICompatibleName.OPENAI_COMPATIBLE: settings.COMPATIBLE_MODEL,
     AzureOpenAIModelName.AZURE_GPT_4O_MINI: settings.AZURE_OPENAI_DEPLOYMENT_MAP.get(
         "gpt-4o-mini", ""

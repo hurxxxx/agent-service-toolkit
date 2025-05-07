@@ -1,6 +1,6 @@
 # 🧰 AI Agent Service Toolkit
 
-[![build status](https://github.com/JoshuaC215/agent-service-toolkit/actions/workflows/test.yml/badge.svg)](https://github.com/JoshuaC215/agent-service-toolkit/actions/workflows/test.yml) [![codecov](https://codecov.io/github/JoshuaC215/agent-service-toolkit/graph/badge.svg?token=5MTJSYWD05)](https://codecov.io/github/JoshuaC215/agent-service-toolkit) [![Python Version](https://img.shields.io/python/required-version-toml?tomlFilePath=https%3A%2F%2Fraw.githubusercontent.com%2FJoshuaC215%2Fagent-service-toolkit%2Frefs%2Fheads%2Fmain%2Fpyproject.toml)](https://github.com/JoshuaC215/agent-service-toolkit/blob/main/pyproject.toml)
+[![build status](https://github.com/JoshuaC215/agent-service-toolkit/actions/workflows/test.yml/badge.svg)](https://github.com/JoshuaC215/agent-service-toolkit/actions/workflows/test.yml) [![codecov](https://codecov.io/github/JoshuaC215/agent-service-toolkit/graph/badge.svg?token=5MTJSYWD05)](https://codecov.io/github/JoshuaC215/agent-service-toolkit) [![Python Version](https://img.shields.io/python/required-version-toml?tomlFilePath=https%3A%2F%2Fraw.githubusercontent.com%2FJoshuaC215%2Fagent-service-toolkit%2Frefs%2Fheads%2Fmain%2Fpyproject.toml)](https://github.com/JoshuaC215/agent-service-toolkit/blob/main/pyproject.toml) ![Python 3.11-3.13](https://img.shields.io/badge/python-3.11%20%7C%203.12%20%7C%203.13-blue)
 [![GitHub License](https://img.shields.io/github/license/JoshuaC215/agent-service-toolkit)](https://github.com/JoshuaC215/agent-service-toolkit/blob/main/LICENSE) [![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_red.svg)](https://agent-service-toolkit.streamlit.app/)
 
 A full toolkit for running an AI agent service built with LangGraph, FastAPI and Streamlit.
@@ -27,8 +27,8 @@ echo 'OPENAI_API_KEY=your_openai_api_key' >> .env
 
 # uv is recommended but "pip install ." also works
 pip install uv
-uv sync --frozen
-# "uv sync" creates .venv automatically
+uv sync
+# "uv sync" creates .venv automatically and installs the latest compatible versions
 source .venv/bin/activate
 python src/run_service.py
 
@@ -50,7 +50,7 @@ docker compose watch
 
 ### Key Features
 
-1. **LangGraph Agent and latest features**: A customizable agent built using the LangGraph framework. Implements the latest LangGraph v0.3 features including human in the loop with `interrupt()`, and flow control with `Command`, and `langgraph-supervisor`.
+1. **LangGraph Agent and latest features**: A customizable agent built using the LangGraph framework. Implements the latest LangGraph v0.4 features including human in the loop with `interrupt()`, and flow control with `Command`, and `langgraph-supervisor`.
 1. **FastAPI Service**: Serves the agent with both streaming and non-streaming endpoints.
 1. **Advanced Streaming**: A novel approach to support both token-based and message-based streaming.
 1. **Streamlit Interface**: Provides a user-friendly chat interface for interacting with the agent.
@@ -60,6 +60,8 @@ docker compose watch
 1. **Feedback Mechanism**: Includes a star-based feedback system integrated with LangSmith.
 1. **Docker Support**: Includes Dockerfiles and a docker compose file for easy development and deployment.
 1. **Testing**: Includes robust unit and integration tests for the full repo.
+1. **Web Search Capabilities**: Includes both DuckDuckGo and Tavily search integrations for up-to-date information retrieval.
+1. **Support for Latest Models**: Compatible with the newest OpenAI models including gpt-4.1-mini.
 
 ### Key Files
 
@@ -146,6 +148,32 @@ The agent supports [LangGraph Studio](https://github.com/langchain-ai/langgraph-
 
 You can simply install LangGraph Studio, add your `.env` file to the root directory as described above, and then launch LangGraph studio pointed at the root directory. Customize `langgraph.json` as needed.
 
+### Using the Tavily Search Agent
+
+The toolkit includes a specialized search agent that uses the [Tavily API](https://tavily.com/) for web search functionality. This agent provides more accurate and up-to-date search results compared to the default DuckDuckGo search.
+
+To use the Tavily search agent:
+
+1. Sign up for a Tavily API key at [https://app.tavily.com/sign-in](https://app.tavily.com/sign-in)
+2. Add your API key to your `.env` file:
+   ```
+   TAVILY_API_KEY=your_api_key_here
+   ```
+3. Use the agent by specifying `tavily-search-agent` in your requests:
+   - In the Streamlit app, select "tavily-search-agent" from the agent dropdown
+   - For API calls, use the endpoint `/tavily-search-agent/invoke` or `/tavily-search-agent/stream`
+
+The Tavily search agent is particularly useful for:
+- Answering questions about current events
+- Finding up-to-date information
+- Researching topics with accurate source citations
+
+You can test the Tavily search functionality with the included test scripts:
+```sh
+python simple_tavily_test.py  # Tests basic Tavily search
+python test_tavily_agent.py   # Tests the full Tavily search agent
+```
+
 ### Using Ollama
 
 ⚠️ _**Note:** Ollama support in agent-service-toolkit is experimental and may not work as expected. The instructions below have been tested using Docker Desktop on a MacBook Pro. Please file an issue for any challenges you encounter._
@@ -171,7 +199,7 @@ You can also run the agent service and the Streamlit app locally without Docker,
 
    ```sh
    pip install uv
-   uv sync --frozen
+   uv sync
    source .venv/bin/activate
    ```
 
@@ -209,7 +237,7 @@ Contributions are welcome! Please feel free to submit a Pull Request. Currently 
 
    ```sh
    pip install uv
-   uv sync --frozen
+   uv sync
    pre-commit install
    ```
 
